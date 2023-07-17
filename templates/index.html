@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visualización de datos F1</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Datos F1</h1>
+
+    <label for="document-filter">Seleccionar nombre:</label>
+    <select id="document-filter" onchange="filterTable()">
+        <option value="all">Mostrar todos</option>
+        {% for document in data %}
+            <option value="{{ document.name }}">{{ document.name }}</option>
+        {% endfor %}
+    </select>
+
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Circuit ID</th>
+                <th>Circuit Ref</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Country</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Altitude</th>
+                <th>URL</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for document in data %}
+            <tr data-name="{{ document.name }}">
+                <td>{{ document.circuitId }}</td>
+                <td>{{ document.circuitRef }}</td>
+                <td>{{ document.name }}</td>
+                <td>{{ document.location }}</td>
+                <td>{{ document.country }}</td>
+                <td>{{ document.lat }}</td>
+                <td>{{ document.lng }}</td>
+                <td>{{ document.alt }}</td>
+                <td>{{ document.url }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function filterTable() {
+            var selectElement = document.getElementById("document-filter");
+            var selectedValue = selectElement.value;
+            var table = document.getElementById("data-table");
+            var rows = table.getElementsByTagName("tr");
+
+            for (var i = 0; i < rows.length; i++) {
+                var name = rows[i].getAttribute("data-name");
+                if (selectedValue === "all" || selectedValue === name) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
